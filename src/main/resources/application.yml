@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.96.234.28:3303/mybatis?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+
+  freemarker:
+    cache: false    #页面不加载缓存，修改即时生效
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.sk.cloudmvc.model
