@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CloudmvcApplication {
 
     public static void main(String[] args) {
+        System.setProperty("jasypt.encryptor.password", "qiaochunxiang");
         SpringApplication.run(CloudmvcApplication.class, args);
     }
 

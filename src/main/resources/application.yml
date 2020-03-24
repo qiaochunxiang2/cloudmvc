@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.96.234.28:3303/mybatis?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
+    username: ENC(1nDyE6E86ibkNXWM/+qlvQ==)
+    password: ENC(hV5qYcPEa9+RgBHCZ6vxeg==)
 
   devtools:
     restart:
@@ -17,3 +17,4 @@ spring:
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.sk.cloudmvc.model
+
