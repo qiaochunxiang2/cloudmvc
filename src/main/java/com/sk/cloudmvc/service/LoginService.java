@@ -22,7 +22,7 @@ public class LoginService {
         if (user==null){
             result.setData(false);
         } else {
-            result.setData(true);
+            result.setData(user.getInformation());
         }
         return result;
     }

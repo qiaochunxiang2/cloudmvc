@@ -23,4 +23,9 @@ public class User {
      * 密码
      */
     private String password;
+
+    /**
+     * 用户信息
+     */
+    private UserInformation information;
 }
