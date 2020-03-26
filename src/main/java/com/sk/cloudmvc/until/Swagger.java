@@ -22,7 +22,7 @@ public class Swagger {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sk.cloud.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sk.cloudmvc.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
