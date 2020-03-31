@@ -6,6 +6,8 @@ import com.sk.cloudmvc.until.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * @author qiaochunxiang
  * @date 2020/3/24 15:19
@@ -16,14 +18,10 @@ public class LoginService {
     @Autowired
     private UserMapper userMapper;
 
-    public CommonResult login(String username, String password){
+    public User login(Map<String, Object> jsonData) {
+        String username = jsonData.get("username").toString();
+        String password = jsonData.get("password").toString();
         CommonResult result = new CommonResult();
-        User user =  userMapper.login(username, password);
-        if (user==null){
-            result.setData(false);
-        } else {
-            result.setData(user.getInformation());
-        }
-        return result;
+        return userMapper.login(username, password);
     }
 }

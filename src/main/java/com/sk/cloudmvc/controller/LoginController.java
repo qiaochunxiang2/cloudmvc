@@ -1,5 +1,6 @@
 package com.sk.cloudmvc.controller;
 
+import com.sk.cloudmvc.model.User;
 import com.sk.cloudmvc.service.LoginService;
 import com.sk.cloudmvc.until.CommonResult;
 import io.swagger.annotations.Api;
@@ -7,9 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author qiaochunxiang
@@ -26,13 +27,18 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
-    public CommonResult login(String username, String password) {
+    public CommonResult login(@RequestBody Map<String, Object> jsondata) {
         CommonResult result = new CommonResult();
         try {
-            result = loginService.login(username, password);
+            User user = loginService.login(jsondata);
+            if (user != null){
+                result.setData(user);
+            } else{
+                result.setData(false);
+            }
         } catch (Exception e) {
             result.setState(500);
-            result.setMsg("账号错误");
+            result.setData(e);
             LOGGER.error(e.toString(), e);
         }
         return result;
