@@ -1,12 +1,16 @@
 package com.sk.cloudmvc.service;
 
+import com.sk.cloudmvc.dao.UserInformationMapper;
 import com.sk.cloudmvc.dao.UserMapper;
 import com.sk.cloudmvc.model.User;
-import com.sk.cloudmvc.until.CommonResult;
+import com.sk.cloudmvc.model.UserInformation;
+import com.sk.cloudmvc.until.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author qiaochunxiang
@@ -18,13 +22,35 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserInformationMapper userInformationMapper;
+
     public User login(Map<String, Object> jsonData) {
         String username = jsonData.get("username").toString();
-        String password = jsonData.get("password").toString();
+        String pd = jsonData.get("password").toString();
+        String password = MD5.encoderByMd5(pd);
         return userMapper.login(username, password);
     }
 
     public long changePassword(Map<String, Object> jsonData) {
+        String oldPassword = (String) jsonData.get("oldPassword");
+        String newPassword = (String) jsonData.get("newPassword");
+        jsonData.put("oldPassword", MD5.encoderByMd5(oldPassword));
+        jsonData.put("newPassword", MD5.encoderByMd5(newPassword));
         return userMapper.changePassword(jsonData);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void register(Map<String, String> jsonData){
+        String username = jsonData.get("username");
+        String pd = jsonData.get("password");
+        String password = MD5.encoderByMd5(pd);
+        String id = UUID.randomUUID().toString().replace("-","");
+        User user = new User(id, username, password);
+        UserInformation information = new UserInformation();
+        information.setId(id);
+        userMapper.addUser(user);
+        userInformationMapper.addInformation(information);
+    }
+
 }

@@ -32,4 +32,13 @@ public interface UserMapper {
      * @date 14:48 2020/4/1
      **/
     long changePassword(Map<String, Object> jsondata);
+
+    /**
+    *  注册功能
+    *
+    * @param user 学生信息
+    * @author qiaochunxiang
+    * @date 16:41 2020/4/1
+    **/
+    void addUser(User user);
 }

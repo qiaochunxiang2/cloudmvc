@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sk.cloudmvc.dao.UserMapper">
-<!--    <resultMap id="user" type="com.sk.cloudmvc.model.User">-->
-<!--        <id column="id" property="id"/>-->
-<!--        <result property="username" column="username"/>-->
-<!--        <result property="password" column="password"/>-->
-<!--        <association property="information" column="id"  javaType="com.sk.cloudmvc.model.UserInformation" select="com.sk.cloudmvc.dao.UserInformationMapper.findById"/>-->
-<!--    </resultMap>-->
-<!--    <select id="login" resultMap="user">-->
-<!--        select * from user where username = #{username} and password = #{password}-->
-<!--    </select>-->
+    <!--    <resultMap id="user" type="com.sk.cloudmvc.model.User">-->
+    <!--        <id column="id" property="id"/>-->
+    <!--        <result property="username" column="username"/>-->
+    <!--        <result property="password" column="password"/>-->
+    <!--        <association property="information" column="id"  javaType="com.sk.cloudmvc.model.UserInformation" select="com.sk.cloudmvc.dao.UserInformationMapper.findById"/>-->
+    <!--    </resultMap>-->
+    <!--    <select id="login" resultMap="user">-->
+    <!--        select * from user where username = #{username} and password = #{password}-->
+    <!--    </select>-->
 
     <resultMap id="user" type="com.sk.cloudmvc.model.User">
         <id property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
-<!--        这么写的一个作用就是把下面查出来的userinformation表的数据按这个字段封装起来。-->
+        <!--        这么写的一个作用就是把下面查出来的userinformation表的数据按这个字段封装起来。-->
         <association property="information" javaType="com.sk.cloudmvc.model.UserInformation">
             <id property="id" column="id"/>
             <result property="name" column="name"/>
@@ -26,10 +26,23 @@
         </association>
     </resultMap>
     <select id="login" resultMap="user">
-        select u.*,ui.* from user u, userinformation ui where u.id = ui.id and u.username = #{username} and u.password = #{password}
+        select u.*, ui.*
+        from user u,
+             userinformation ui
+        where u.id = ui.id
+          and u.username = #{username}
+          and u.password = #{password}
     </select>
 
     <update id="changePassword">
-        update user set password = #{newPassword} where username = #{username} and password = #{oldPassword}
+        update user
+        set password = #{newPassword}
+        where username = #{username}
+          and password = #{oldPassword}
     </update>
+
+    <insert id="addUser">
+        insert into user(id, username, password)
+        values (#{id}, #{username}, #{password})
+    </insert>
 </mapper>

@@ -64,4 +64,18 @@ public class UserController {
         }
         return result;
     }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "注册功能", notes = "注册功能")
+    public CommonResult register(@RequestBody Map<String, String> jsondata){
+        CommonResult result = new CommonResult();
+        try {
+            userService.register(jsondata);
+        } catch (Exception e){
+            result.setState(500);
+            result.setMsg("用户名已存在");
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
 }

@@ -19,4 +19,14 @@ public interface UserInformationMapper {
      * @date 16:15 2020/3/26
      **/
     UserInformation findById(String id);
+
+    /**
+    * 注册功能，添加用户信息
+    *
+    * @param userInformation  用户信息
+    * @return long
+    * @author qiaochunxiang
+    * @date 16:40 2020/4/1
+    **/
+    long addInformation(UserInformation userInformation);
 }
