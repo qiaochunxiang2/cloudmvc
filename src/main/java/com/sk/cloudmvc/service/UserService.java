@@ -13,7 +13,7 @@ import java.util.Map;
  * @date 2020/3/24 15:19
  */
 @Service
-public class LoginService {
+public class UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -21,7 +21,10 @@ public class LoginService {
     public User login(Map<String, Object> jsonData) {
         String username = jsonData.get("username").toString();
         String password = jsonData.get("password").toString();
-        CommonResult result = new CommonResult();
         return userMapper.login(username, password);
+    }
+
+    public long changePassword(Map<String, Object> jsonData) {
+        return userMapper.changePassword(jsonData);
     }
 }
