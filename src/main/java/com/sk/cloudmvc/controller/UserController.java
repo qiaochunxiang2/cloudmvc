@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -74,6 +75,21 @@ public class UserController {
         } catch (Exception e){
             result.setState(500);
             result.setMsg("用户名已存在");
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @PostMapping("/updatePhoto")
+    @ApiOperation(value = "更改头像", notes = "更改头像")
+    public CommonResult updatePhoto(MultipartFile file, String id){
+        CommonResult result = new CommonResult();
+        try {
+            boolean uploadResult = userService.updatePhoto(file, id);
+            result.setData(uploadResult);
+        }catch (Exception e){
+            result.setState(500);
+            result.setMsg("服务器错误");
             LOGGER.error(e.toString(), e);
         }
         return result;

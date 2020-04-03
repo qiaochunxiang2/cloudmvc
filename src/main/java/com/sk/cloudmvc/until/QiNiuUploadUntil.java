@@ -12,6 +12,7 @@ import com.qiniu.storage.Region;
 import com.qiniu.util.Auth;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * 七牛云文件上传工具类
@@ -20,6 +21,7 @@ import java.io.File;
  * @date 2020/4/2 20:01
  */
 @Configuration
+@SuppressWarnings("unused")
 public class QiNiuUploadUntil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QiNiuUploadUntil.class);
@@ -27,46 +29,97 @@ public class QiNiuUploadUntil {
     /**
      * 账号AK
      */
-    @Value("${qiniu.AK}")
+    @Value("${qiniu.ak}")
     private  String ak;
 
     /**
      * 账号SK
      */
-    @Value("${qiniu.SK}")
+    @Value("${qiniu.sk}")
     private String sk;
 
     /**
      * 要上传的空间名
      */
-    @Value("${qiniu.BUCKETNAME}")
+    @Value("${qiniu.bucketName}")
     private String bucketName;
 
+    /**
+     * 上传的域名
+     */
+    @Value("${qiniu.dominName}")
+    private String dominName;
 
     /**
-     * 上传
+     * 根据File进行文件上传
      *
      * @param file 需要上传的文件
      * @param key  上传到文件空间里的key，即文件名称
      * @return string
      */
-    public String upload(File file, String key) {
+    public boolean upload(File file, String key) {
         Auth auth = Auth.create(ak, sk);
         com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
         UploadManager uploadManager = new UploadManager(configuration);
         try {
             String token = auth.uploadToken(bucketName);
             if (StringUtils.isEmpty(token)) {
-                return null;
+                return false;
             }
             Response res = uploadManager.put(file, key, token);
-            if (res.isOK()) {
-                return key;
-            }
+            return res.isOK();
         } catch (QiniuException e) {
             LOGGER.error(e.toString(), e);
         }
-        return null;
+        return false;
+    }
+
+    /**
+     * 根据byte[]进行上传
+     *
+     * @param fileBytes 需要上传的文件字节流
+     * @param key  上传到文件空间里的key，即文件名称
+     * @return string
+     */
+    public boolean upload(byte[] fileBytes, String key) {
+        Auth auth = Auth.create(ak, sk);
+        com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
+        UploadManager uploadManager = new UploadManager(configuration);
+        try {
+            String token = auth.uploadToken(bucketName);
+            if (StringUtils.isEmpty(token)) {
+                return false;
+            }
+            Response res = uploadManager.put(fileBytes, key, token);
+            return res.isOK();
+        } catch (QiniuException e) {
+            LOGGER.error(e.toString(), e);
+        }
+        return false;
+    }
+
+    /**
+     * 根据inputstream进行上传
+     *
+     * @param file 需要上传的字节输入流
+     * @param key  上传到文件空间里的key，即文件名称
+     * @return string
+     */
+    public boolean upload(InputStream file, String key) {
+        Auth auth = Auth.create(ak, sk);
+        com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
+        UploadManager uploadManager = new UploadManager(configuration);
+        try {
+            String token = auth.uploadToken(bucketName);
+            if (StringUtils.isEmpty(token)) {
+                return false;
+            }
+            Response res = uploadManager.put(file, key, token,null,null);
+            return res.isOK();
+        } catch (QiniuException e) {
+            LOGGER.error(e.toString(), e);
+        }
+        return false;
     }
 
     public String getAk() {
@@ -93,12 +146,21 @@ public class QiNiuUploadUntil {
         this.bucketName = bucketName;
     }
 
+    public String getDominName() {
+        return dominName;
+    }
+
+    public void setDominName(String dominName) {
+        this.dominName = dominName;
+    }
+
     @Override
     public String toString() {
         return "QiNiuUploadUntil{" +
                 "ak='" + ak + '\'' +
                 ", sk='" + sk + '\'' +
                 ", bucketName='" + bucketName + '\'' +
+                ", dominName='" + dominName + '\'' +
                 '}';
     }
 }

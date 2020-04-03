@@ -5,10 +5,13 @@ import com.sk.cloudmvc.dao.UserMapper;
 import com.sk.cloudmvc.model.User;
 import com.sk.cloudmvc.model.UserInformation;
 import com.sk.cloudmvc.until.MD5;
+import com.sk.cloudmvc.until.QiNiuUploadUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,6 +27,9 @@ public class UserService {
 
     @Autowired
     private UserInformationMapper userInformationMapper;
+
+    @Autowired
+    private QiNiuUploadUntil qiNiuUploadUntil;
 
     public User login(Map<String, Object> jsonData) {
         String username = jsonData.get("username").toString();
@@ -49,8 +55,17 @@ public class UserService {
         User user = new User(id, username, password);
         UserInformation information = new UserInformation();
         information.setId(id);
+        String imageUrl = qiNiuUploadUntil.getDominName() + id;
+        information.setImageUrl(imageUrl);
         userMapper.addUser(user);
         userInformationMapper.addInformation(information);
     }
 
+    public boolean updatePhoto(MultipartFile file, String id) {
+        try (InputStream inputStream = file.getInputStream()){
+           return qiNiuUploadUntil.upload(inputStream, id);
+        } catch (Exception e){
+            throw new RuntimeException(e.toString(), e);
+        }
+    }
 }

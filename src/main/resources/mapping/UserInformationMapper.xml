@@ -13,6 +13,6 @@
         select * from userinformation where id = #{id}
     </select>
     <insert id="addInformation">
-        insert into userinformation(id) values(#{id})
+        insert into userinformation(id, image_url) values(#{id}, #{imageUrl})
     </insert>
 </mapper>
