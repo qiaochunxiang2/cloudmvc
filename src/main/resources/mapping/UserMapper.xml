@@ -23,6 +23,11 @@
             <result property="age" column="age"/>
             <result property="imageUrl" column="image_url"/>
             <result property="phone" column="phone"/>
+            <result property="birthday" column="birthday"/>
+            <result property="qq" column="qq"/>
+            <result property="address" column="address"/>
+            <result property="email" column="email"/>
+            <result property="note" column="note"/>
         </association>
     </resultMap>
     <select id="login" resultMap="user">
