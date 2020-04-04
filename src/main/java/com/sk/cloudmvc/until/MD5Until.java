@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * @author qiaochunxiang
  * @date 2020/4/1 20:34
  */
-public class MD5 {
+public class MD5Until {
     /**利用MD5进行加密*/
     public static String encoderByMd5(String str) {
         MessageDigest md5;
