@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @SuppressWarnings("unused")
 public interface UserInformationMapper {
+
     /**
      * 按照id查找用户资料
      *
@@ -21,12 +22,20 @@ public interface UserInformationMapper {
     UserInformation findById(String id);
 
     /**
-    * 注册功能，添加用户信息
-    *
-    * @param userInformation  用户信息
-    * @return long
-    * @author qiaochunxiang
-    * @date 16:40 2020/4/1
-    **/
-    long addInformation(UserInformation userInformation);
+     * 注册功能，添加用户信息
+     *
+     * @param userInformation 用户信息
+     * @author qiaochunxiang
+     * @date 16:40 2020/4/1
+     **/
+    void addInformation(UserInformation userInformation);
+
+    /**
+     * 修改用户信息
+     *
+     * @param userInformation 用户信息
+     * @author qiaochunxiang
+     * @date 21:52 2020/4/3
+     **/
+    void updateInformation(UserInformation userInformation);
 }

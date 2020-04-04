@@ -15,4 +15,8 @@
     <insert id="addInformation">
         insert into userinformation(id, image_url) values(#{id}, #{imageUrl})
     </insert>
+
+    <update id="updateInformation">
+        update userinformation set name = #{name}, sex = #{sex}, age = #{age}, phone = #{phone} where id = #{id}
+    </update>
 </mapper>

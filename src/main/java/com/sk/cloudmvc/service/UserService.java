@@ -31,6 +31,14 @@ public class UserService {
     @Autowired
     private QiNiuUploadUntil qiNiuUploadUntil;
 
+    /**
+     * 登录
+     *
+     * @param jsonData 前端数据
+     * @return com.sk.cloudmvc.model.User
+     * @author qiaochunxiang
+     * @date 15:17 2020/3/24
+     **/
     public User login(Map<String, Object> jsonData) {
         String username = jsonData.get("username").toString();
         String pd = jsonData.get("password").toString();
@@ -38,6 +46,14 @@ public class UserService {
         return userMapper.login(username, password);
     }
 
+    /**
+     * 修改密码
+     *
+     * @param jsonData 前端数据
+     * @return long
+     * @author qiaochunxiang
+     * @date 14:48 2020/4/1
+     **/
     public long changePassword(Map<String, Object> jsonData) {
         String oldPassword = (String) jsonData.get("oldPassword");
         String newPassword = (String) jsonData.get("newPassword");
@@ -46,12 +62,19 @@ public class UserService {
         return userMapper.changePassword(jsonData);
     }
 
+    /**
+     * 注册
+     *
+     * @param jsonData 用户信息
+     * @author qiaochunxiang
+     * @date 16:41 2020/4/1
+     **/
     @Transactional(rollbackFor = Exception.class)
-    public void register(Map<String, String> jsonData){
+    public void register(Map<String, String> jsonData) {
         String username = jsonData.get("username");
         String pd = jsonData.get("password");
         String password = MD5.encoderByMd5(pd);
-        String id = UUID.randomUUID().toString().replace("-","");
+        String id = UUID.randomUUID().toString().replace("-", "");
         User user = new User(id, username, password);
         UserInformation information = new UserInformation();
         information.setId(id);
@@ -61,11 +84,32 @@ public class UserService {
         userInformationMapper.addInformation(information);
     }
 
+    /**
+     * 修改头像
+     *
+     * @param file 图片信息
+     * @param id   用户id
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 21:58 2020/4/3
+     **/
     public boolean updatePhoto(MultipartFile file, String id) {
-        try (InputStream inputStream = file.getInputStream()){
-           return qiNiuUploadUntil.upload(inputStream, id);
-        } catch (Exception e){
+        try (InputStream inputStream = file.getInputStream()) {
+            return qiNiuUploadUntil.upload(inputStream, id);
+        } catch (Exception e) {
             throw new RuntimeException(e.toString(), e);
         }
     }
+
+    /**
+     * 修改用户资料
+     *
+     * @param information 用户信息
+     * @author qiaochunxiang
+     * @date 21:58 2020/4/3
+     **/
+    public void updateInformation(UserInformation information) {
+        userInformationMapper.updateInformation(information);
+    }
+
 }

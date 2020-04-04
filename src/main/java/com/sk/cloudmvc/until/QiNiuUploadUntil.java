@@ -1,5 +1,8 @@
 package com.sk.cloudmvc.until;
 
+import com.qiniu.cdn.CdnManager;
+import com.qiniu.cdn.CdnResult;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +33,7 @@ public class QiNiuUploadUntil {
      * 账号AK
      */
     @Value("${qiniu.ak}")
-    private  String ak;
+    private String ak;
 
     /**
      * 账号SK
@@ -51,22 +54,106 @@ public class QiNiuUploadUntil {
     private String dominName;
 
     /**
-     * 根据File进行文件上传
+     * 机房地址
+     */
+    @Value("${qiniu.address}")
+    private Address address;
+
+    public enum Address {
+        // 华北服务器
+        HUABEI,
+        // 华南服务器
+        HUANAN,
+        // 华东服务器
+        HUADONG,
+        // 北美服务器
+        BEIMEI,
+        // 东南亚服务器
+        DONGNANYA
+    }
+
+    private Auth getAuth() {
+        return Auth.create(ak, sk);
+    }
+
+    public com.qiniu.storage.Configuration getConfiguration() {
+        com.qiniu.storage.Configuration configuration;
+        switch (address) {
+            case HUADONG:
+                configuration = new com.qiniu.storage.Configuration(Region.huadong());
+                break;
+            case HUABEI:
+                configuration = new com.qiniu.storage.Configuration(Region.huabei());
+                break;
+            case HUANAN:
+                configuration = new com.qiniu.storage.Configuration(Region.huanan());
+                break;
+            case BEIMEI:
+                configuration = new com.qiniu.storage.Configuration(Region.beimei());
+                break;
+            case DONGNANYA:
+                configuration = new com.qiniu.storage.Configuration(Region.xinjiapo());
+                break;
+            default:
+                configuration = new com.qiniu.storage.Configuration(Region.autoRegion());
+        }
+        return configuration;
+    }
+
+    /**
+     * 文件上传
      *
      * @param file 需要上传的文件
      * @param key  上传到文件空间里的key，即文件名称
      * @return string
      */
-    public boolean upload(File file, String key) {
-        Auth auth = Auth.create(ak, sk);
-        com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
+    public boolean upload(Object file, String key) {
+        Auth auth = getAuth();
+        com.qiniu.storage.Configuration configuration = getConfiguration();
         UploadManager uploadManager = new UploadManager(configuration);
         try {
-            String token = auth.uploadToken(bucketName);
+            // 覆盖上传
+            String token = auth.uploadToken(bucketName, key);
             if (StringUtils.isEmpty(token)) {
                 return false;
             }
-            Response res = uploadManager.put(file, key, token);
+            Response res;
+            if (file instanceof File) {
+                res = uploadManager.put((File) file, key, token);
+            } else if (file instanceof InputStream) {
+                res = uploadManager.put((InputStream) file, key, token, null, null);
+            } else {
+                res = uploadManager.put((byte[]) file, key, token);
+            }
+            // 刷新缓存
+            if (res.isOK()) {
+                String refreshUrl = dominName + key;
+                return refreshUrls(refreshUrl);
+            }
+            return false;
+        } catch (QiniuException e) {
+            LOGGER.error(e.toString(), e);
+        }
+        return false;
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param key 文件名
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 10:06 2020/4/4
+     **/
+    public boolean delete(String key) {
+        Auth auth = getAuth();
+        com.qiniu.storage.Configuration configuration = getConfiguration();
+        BucketManager bucketManager = new BucketManager(auth, configuration);
+        try {
+            if (StringUtils.isEmpty(key)) {
+                return false;
+            }
+            Response res = bucketManager.delete(bucketName, key);
             return res.isOK();
         } catch (QiniuException e) {
             LOGGER.error(e.toString(), e);
@@ -75,47 +162,19 @@ public class QiNiuUploadUntil {
     }
 
     /**
-     * 根据byte[]进行上传
+     * 刷新文件名
      *
-     * @param fileBytes 需要上传的文件字节流
-     * @param key  上传到文件空间里的key，即文件名称
-     * @return string
-     */
-    public boolean upload(byte[] fileBytes, String key) {
+     * @param urls 刷新的文件url
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 10:07 2020/4/4
+     **/
+    public boolean refreshUrls(String... urls) {
         Auth auth = Auth.create(ak, sk);
-        com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
-        UploadManager uploadManager = new UploadManager(configuration);
+        CdnManager cdnManager = new CdnManager(auth);
         try {
-            String token = auth.uploadToken(bucketName);
-            if (StringUtils.isEmpty(token)) {
-                return false;
-            }
-            Response res = uploadManager.put(fileBytes, key, token);
-            return res.isOK();
-        } catch (QiniuException e) {
-            LOGGER.error(e.toString(), e);
-        }
-        return false;
-    }
-
-    /**
-     * 根据inputstream进行上传
-     *
-     * @param file 需要上传的字节输入流
-     * @param key  上传到文件空间里的key，即文件名称
-     * @return string
-     */
-    public boolean upload(InputStream file, String key) {
-        Auth auth = Auth.create(ak, sk);
-        com.qiniu.storage.Configuration configuration = new com.qiniu.storage.Configuration(Region.region0());
-        UploadManager uploadManager = new UploadManager(configuration);
-        try {
-            String token = auth.uploadToken(bucketName);
-            if (StringUtils.isEmpty(token)) {
-                return false;
-            }
-            Response res = uploadManager.put(file, key, token,null,null);
-            return res.isOK();
+            CdnResult.RefreshResult result = cdnManager.refreshUrls(urls);
+            return result.code == 200;
         } catch (QiniuException e) {
             LOGGER.error(e.toString(), e);
         }
@@ -154,6 +213,14 @@ public class QiNiuUploadUntil {
         this.dominName = dominName;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "QiNiuUploadUntil{" +
@@ -161,6 +228,7 @@ public class QiNiuUploadUntil {
                 ", sk='" + sk + '\'' +
                 ", bucketName='" + bucketName + '\'' +
                 ", dominName='" + dominName + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
