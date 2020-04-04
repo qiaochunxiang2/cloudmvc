@@ -18,4 +18,11 @@ mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.sk.cloudmvc.model
 
+qiniu:
+  ak: 6QT3AO91Kt5kvfV8Wx5z7yfFWcWtnaittv4EFiPb
+  sk: 9L-5L1hMtUQAswyfMRScwrUkDrQj3zjarzWdbAQ1
+  bucketName: qiaochunxiang
+  dominName: http://q87xedep1.bkt.clouddn.com/
+  address: HUABEI
+
 
