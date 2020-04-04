@@ -4,7 +4,7 @@ import com.sk.cloudmvc.dao.UserInformationMapper;
 import com.sk.cloudmvc.dao.UserMapper;
 import com.sk.cloudmvc.model.User;
 import com.sk.cloudmvc.model.UserInformation;
-import com.sk.cloudmvc.until.MD5;
+import com.sk.cloudmvc.until.MD5Until;
 import com.sk.cloudmvc.until.QiNiuUploadUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class UserService {
     public User login(Map<String, Object> jsonData) {
         String username = jsonData.get("username").toString();
         String pd = jsonData.get("password").toString();
-        String password = MD5.encoderByMd5(pd);
+        String password = MD5Until.encoderByMd5(pd);
         return userMapper.login(username, password);
     }
 
@@ -57,8 +57,8 @@ public class UserService {
     public long changePassword(Map<String, Object> jsonData) {
         String oldPassword = (String) jsonData.get("oldPassword");
         String newPassword = (String) jsonData.get("newPassword");
-        jsonData.put("oldPassword", MD5.encoderByMd5(oldPassword));
-        jsonData.put("newPassword", MD5.encoderByMd5(newPassword));
+        jsonData.put("oldPassword", MD5Until.encoderByMd5(oldPassword));
+        jsonData.put("newPassword", MD5Until.encoderByMd5(newPassword));
         return userMapper.changePassword(jsonData);
     }
 
@@ -73,7 +73,7 @@ public class UserService {
     public void register(Map<String, String> jsonData) {
         String username = jsonData.get("username");
         String pd = jsonData.get("password");
-        String password = MD5.encoderByMd5(pd);
+        String password = MD5Until.encoderByMd5(pd);
         String id = UUID.randomUUID().toString().replace("-", "");
         User user = new User(id, username, password);
         UserInformation information = new UserInformation();
