@@ -1,6 +1,7 @@
 package com.sk.cloudmvc.dao;
 
 import com.sk.cloudmvc.model.UserInformation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -38,4 +39,14 @@ public interface UserInformationMapper {
      * @date 21:52 2020/4/3
      **/
     void updateInformation(UserInformation userInformation);
+
+    /**
+     * 修改头像地址
+     *
+     * @param id       用户id
+     * @param imageUrl 头像地址
+     * @author qiaochunxiang
+     * @date 15:31 2020/4/5
+     **/
+    void updateImageUrl(@Param("id") String id, @Param("imageUrl") String imageUrl);
 }

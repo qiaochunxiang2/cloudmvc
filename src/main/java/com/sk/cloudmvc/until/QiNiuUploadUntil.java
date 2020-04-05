@@ -125,12 +125,7 @@ public class QiNiuUploadUntil {
             } else {
                 res = uploadManager.put((byte[]) file, key, token);
             }
-            // 刷新缓存
-            if (res.isOK()) {
-                String refreshUrl = dominName + key;
-                return refreshUrls(refreshUrl);
-            }
-            return false;
+            return res.isOK();
         } catch (QiniuException e) {
             LOGGER.error(e.toString(), e);
         }

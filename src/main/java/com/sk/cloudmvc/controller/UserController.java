@@ -86,15 +86,32 @@ public class UserController {
     }
 
     @PostMapping("/updatePhoto")
-    @ApiOperation(value = "更改头像", notes = "更改头像")
-    public CommonResult updatePhoto(MultipartFile file, String id) {
+    @ApiOperation(value = "更改头像覆盖上传并刷新", notes = "更改头像覆盖上传并刷新")
+    public CommonResult uploadAndRefresh(MultipartFile file, String id, String key) {
         CommonResult result = new CommonResult();
         try {
-            boolean uploadResult = userService.updatePhoto(file, id);
+            Object uploadResult = userService.updatePhoto(file, id, key);
             result.setData(uploadResult);
         } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
+            LOGGER.error(e.toString(), e);
+        }
+        System.out.println(result);
+        return result;
+    }
+
+    @PostMapping("uploadPhoto")
+    @ApiOperation(value = "上传新文件然后删除旧文件", notes = "上传新文件然后删除旧文件")
+    public CommonResult uploadAndDelete(MultipartFile file, String id, String oldKey) {
+        CommonResult result = new CommonResult();
+        try {
+            String newKey = userService.uploadAndDeletePhoto(file, id, oldKey);
+            result.setData(newKey);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
