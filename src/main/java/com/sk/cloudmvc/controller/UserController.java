@@ -131,9 +131,4 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/test")
-    public String test() {
-        System.out.println(qiNiuUploadUntil);
-        return "success";
-    }
 }
