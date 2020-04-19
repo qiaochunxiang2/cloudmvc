@@ -36,7 +36,7 @@ public class BlogController {
             result.setData(all);
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
@@ -51,7 +51,7 @@ public class BlogController {
             result.setData(publishResult);
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
@@ -66,7 +66,7 @@ public class BlogController {
             result.setData(all);
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;

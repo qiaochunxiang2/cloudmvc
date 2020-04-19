@@ -29,14 +29,15 @@ public class CloudController {
 
     @GetMapping("findAll")
     @ApiOperation(value = "获取所有的服务器", notes = "获取所有的服务器")
-    public CommonResult findAll(String userId){
+    public CommonResult findAll(String userId) {
         CommonResult result = new CommonResult();
         try {
             List<Cloud> clouds = cloudService.findAll(userId);
             result.setData(clouds);
-        } catch (Exception e){
+        } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;

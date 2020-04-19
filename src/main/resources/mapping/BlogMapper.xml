@@ -5,6 +5,7 @@
         <id column="id" property="id"/>
         <result property="content" column="content"/>
         <result property="title" column="title"/>
+        <result property="publishDate" column="publishDate"/>
         <association property="userInformation" javaType="com.sk.cloudmvc.model.UserInformation">
             <id property="id" column="id"/>
             <result property="name" column="name"/>
@@ -27,8 +28,8 @@
     </select>
 
     <insert id="publish">
-        insert into blog(id, title, content, uid)
-        values (#{id}, #{title}, #{content}, #{uid})
+        insert into blog(id, title, content, uid, publishDate)
+        values (#{id}, #{title}, #{content}, #{uid}, now())
     </insert>
 
     <select id="personAll" resultMap="blog">

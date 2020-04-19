@@ -4,7 +4,6 @@ import com.sk.cloudmvc.model.User;
 import com.sk.cloudmvc.model.UserInformation;
 import com.sk.cloudmvc.service.UserService;
 import com.sk.cloudmvc.until.CommonResult;
-import com.sk.cloudmvc.until.QiNiuUploadUntil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -29,9 +28,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private QiNiuUploadUntil qiNiuUploadUntil;
-
     @PostMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
     public CommonResult login(@RequestBody Map<String, Object> jsondata) {
@@ -45,7 +41,7 @@ public class UserController {
             }
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
@@ -64,7 +60,7 @@ public class UserController {
             }
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             result.setMsg("服务器错误");
             LOGGER.error(e.toString(), e);
         }
@@ -97,7 +93,6 @@ public class UserController {
             result.setMsg("服务器错误");
             LOGGER.error(e.toString(), e);
         }
-        System.out.println(result);
         return result;
     }
 
@@ -126,6 +121,7 @@ public class UserController {
         } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
