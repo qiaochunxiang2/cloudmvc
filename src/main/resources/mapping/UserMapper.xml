@@ -50,4 +50,17 @@
         insert into user(id, username, password)
         values (#{id}, #{username}, #{password})
     </insert>
+
+    <select id="findAll" resultMap="user">
+        select *
+        from user u,
+             userinformation ui
+        where u.id = ui.id
+    </select>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where id = #{id}
+    </delete>
 </mapper>

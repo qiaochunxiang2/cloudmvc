@@ -49,4 +49,14 @@ public interface UserInformationMapper {
      * @date 15:31 2020/4/5
      **/
     void updateImageUrl(@Param("id") String id, @Param("imageUrl") String imageUrl);
+
+    /**
+     * 删除用户信息
+     *
+     * @param id 用户id
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 16:50 2020/4/20
+     **/
+    boolean deleteUserInformation(String id);
 }

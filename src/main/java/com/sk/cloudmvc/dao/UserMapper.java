@@ -4,6 +4,7 @@ import com.sk.cloudmvc.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,11 +35,30 @@ public interface UserMapper {
     long changePassword(Map<String, Object> jsondata);
 
     /**
-    *  注册功能
-    *
-    * @param user 学生信息
-    * @author qiaochunxiang
-    * @date 16:41 2020/4/1
-    **/
+     * 注册功能
+     *
+     * @param user 学生信息
+     * @author qiaochunxiang
+     * @date 16:41 2020/4/1
+     **/
     void addUser(User user);
+
+    /**
+     * 查询所有用户
+     *
+     * @return java.util.List<com.sk.cloudmvc.model.User>
+     * @author qiaochunxiang
+     * @date 15:44 2020/4/20
+     **/
+    List<User> findAll();
+
+    /**
+     * 删除用户id
+     *
+     * @param id 用户id
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 16:49 2020/4/20
+     **/
+    boolean deleteUser(String id);
 }

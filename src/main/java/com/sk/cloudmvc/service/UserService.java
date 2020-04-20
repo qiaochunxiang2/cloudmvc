@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
@@ -72,18 +73,18 @@ public class UserService {
     /**
      * 注册
      *
-     * @param jsonData 用户信息
+     * @param user 用户信息
      * @author qiaochunxiang
      * @date 16:41 2020/4/1
      **/
     @Transactional(rollbackFor = Exception.class)
-    public void register(Map<String, String> jsonData) {
-        String username = jsonData.get("username");
-        String pd = jsonData.get("password");
+    public void register(User user) {
+        String pd = user.getPassword();
         String password = MD5Until.encoderByMd5(pd);
         String id = UUID.randomUUID().toString().replace("-", "");
-        User user = new User(id, username, password);
-        UserInformation information = new UserInformation();
+        user.setId(id);
+        user.setPassword(password);
+        UserInformation information = user.getInformation();
         information.setId(id);
         userMapper.addUser(user);
         userInformationMapper.addInformation(information);
@@ -93,7 +94,7 @@ public class UserService {
      * 修改头像
      *
      * @param file 图片信息
-     * @param id 用户名
+     * @param id   用户名
      * @param key  头像位置
      * @return boolean
      * @author qiaochunxiang
@@ -124,15 +125,15 @@ public class UserService {
     }
 
     /**
-    *  先上传新的头像，然后异步删除旧的图片
-    *
-    * @param file 文件
-    * @param id 用户名
-    * @param oldkey  旧图片位置
-    * @return java.lang.String
-    * @author qiaochunxiang
-    * @date 17:38 2020/4/5
-    **/
+     * 先上传新的头像，然后异步删除旧的图片
+     *
+     * @param file   文件
+     * @param id     用户名
+     * @param oldkey 旧图片位置
+     * @return java.lang.String
+     * @author qiaochunxiang
+     * @date 17:38 2020/4/5
+     **/
     public String uploadAndDeletePhoto(MultipartFile file, String id, String oldkey) {
         String newKey = UUID.randomUUID().toString().replace("-", "");
         try (InputStream inputStream = file.getInputStream()) {
@@ -158,4 +159,28 @@ public class UserService {
         userInformationMapper.updateInformation(information);
     }
 
+
+    /**
+     * @return java.util.List<com.sk.cloudmvc.model.User>
+     * @author qiaochunxiang
+     * @date 15:46 2020/4/20
+     **/
+    public List<User> findAll() {
+        return userMapper.findAll();
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @param id 用户id
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 16:52 2020/4/20
+     **/
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteUser(String id) {
+        boolean result1 = userMapper.deleteUser(id);
+        boolean result2 = userInformationMapper.deleteUserInformation(id);
+        return result1 && result2;
+    }
 }

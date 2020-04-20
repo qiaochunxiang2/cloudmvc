@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,12 +70,13 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiOperation(value = "注册功能", notes = "注册功能")
-    public CommonResult register(@RequestBody Map<String, String> jsondata) {
+    public CommonResult register(@RequestBody User user) {
         CommonResult result = new CommonResult();
         try {
-            userService.register(jsondata);
+            userService.register(user);
         } catch (Exception e) {
             result.setState(500);
+            result.setData(false);
             result.setMsg("用户名已存在");
             LOGGER.error(e.toString(), e);
         }
@@ -127,4 +129,35 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("/findAll")
+    @ApiOperation(value = "查询所有用户", notes = "查询所有用户")
+    public CommonResult findAll() {
+        CommonResult result = new CommonResult();
+        try {
+            List<User> all = userService.findAll();
+            result.setData(all);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @DeleteMapping("/deleteUser")
+    @ApiOperation(value = "删除用户", notes = "删除用户")
+    public CommonResult delete(String id) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean deleteResult = userService.deleteUser(id);
+            result.setData(deleteResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
 }
