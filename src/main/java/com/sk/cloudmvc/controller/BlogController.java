@@ -57,7 +57,7 @@ public class BlogController {
         return result;
     }
 
-    @PostMapping("/personAll")
+    @GetMapping("/personAll")
     @ApiOperation(value = "查询个人所有博客", notes = "查询个人所有博客")
     public CommonResult personAll(String uid) {
         CommonResult result = new CommonResult();

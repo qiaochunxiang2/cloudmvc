@@ -25,6 +25,10 @@ public class Blog {
      */
     private String content;
 
+    /**
+     * 描述信息
+     */
+    private String describe;
 
     /**
      * 用户资料
