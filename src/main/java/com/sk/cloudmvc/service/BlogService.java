@@ -31,7 +31,9 @@ public class BlogService {
         String id = UUID.randomUUID().toString().replace("-", "");
         jsonData.put("id", id);
         String describe = (String) jsonData.get("content");
-        describe = describe.replaceAll("[^0-9a-zA-Z\u4e00-\u9fa5.，,。？“”]+","").substring(0, 150);
+        if (describe.length()>150){
+            describe = describe.replaceAll("[^0-9a-zA-Z\u4e00-\u9fa5.，,。？“”]+","").substring(0, 150);
+        }
         jsonData.put("describe", describe);
         return blogMapper.publish(jsonData);
     }
