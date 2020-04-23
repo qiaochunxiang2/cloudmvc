@@ -28,6 +28,7 @@
             <result property="address" column="address"/>
             <result property="email" column="email"/>
             <result property="note" column="note"/>
+            <association property="department" column="dId" select="com.sk.cloudmvc.dao.DepartmentMapper.findById" javaType="com.sk.cloudmvc.model.Department"/>
         </association>
     </resultMap>
     <select id="login" resultMap="user">

@@ -4,6 +4,8 @@ import com.sk.cloudmvc.model.UserInformation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author qiaochunxiang
  * @date 2020/3/26 16:13
@@ -59,4 +61,14 @@ public interface UserInformationMapper {
      * @date 16:50 2020/4/20
      **/
     boolean deleteUserInformation(String id);
+
+    /**
+     * 根据部门去查询人
+     *
+     * @param dId 部门id
+     * @return java.util.List<com.sk.cloudmvc.model.UserInformation>
+     * @author qiaochunxiang
+     * @date 22:40 2020/4/23
+     **/
+    List<UserInformation> findByDid(String dId);
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.cloudmvc.dao.DepartmentMapper">
+    <resultMap id="department" type="com.sk.cloudmvc.model.Department">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="company" javaType="com.sk.cloudmvc.model.Company">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="address" column="address"/>
+            <result property="phone" column="phone"/>
+        </association>
+    </resultMap>
+
+    <select id="allDepartment" resultMap="department">
+        select *
+        from department d,
+             company c
+        where d.cId = c.id
+        <if test="cId != null and cId != ''">
+            and cId = #{cId}
+        </if>
+    </select>
+
+    <delete id="deleteDepartment">
+        delete
+        from department
+        where id = #{id}
+    </delete>
+
+    <insert id="addDepartment">
+        insert into department(id, name, cId)
+        values (#{id}, #{name}, #{cId})
+    </insert>
+
+    <select id="findById" resultMap="department">
+        select *
+        from department d,
+             company c
+        where d.cId = c.id
+            and d.id = #{id}
+    </select>
+</mapper>

@@ -29,4 +29,8 @@
     <delete id="deleteUserInformation">
         delete from userinformation where id = #{id}
     </delete>
+
+    <select id="findByDid" resultMap="userinformation">
+        select * from userinformation where dId = #{dId}
+    </select>
 </mapper>

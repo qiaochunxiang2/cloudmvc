@@ -65,4 +65,9 @@ public class UserInformation {
      * 个人简介
      */
     private String note;
+
+    /**
+     * 所属部门
+     */
+    private Department department;
 }
