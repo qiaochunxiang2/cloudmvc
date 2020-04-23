@@ -31,7 +31,6 @@ public class DepartmentController {
     @ApiOperation(value = "查询所有部门", notes = "查询所有部门")
     public CommonResult allDepartments(@RequestParam(name = "id", required = false) String id) {
         CommonResult result = new CommonResult();
-        System.out.println(id);
         try {
             List<Department> departments = departmentService.allDepartments(id);
             result.setData(departments);
@@ -58,7 +57,7 @@ public class DepartmentController {
         return result;
     }
 
-    @PostMapping("/deleteCompany")
+    @DeleteMapping("/deleteDepartment")
     @ApiOperation(value = "删除部门", notes = "删除部门")
     public CommonResult deleteDepartment(String id) {
         CommonResult result = new CommonResult();
@@ -72,4 +71,6 @@ public class DepartmentController {
         }
         return result;
     }
+
+
 }

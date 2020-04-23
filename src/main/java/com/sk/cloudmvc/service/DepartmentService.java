@@ -56,7 +56,7 @@ public class DepartmentService {
      **/
     public boolean deleteDepartment(String id) {
         List<UserInformation> users = userInformationMapper.findByDid(id);
-        if (users != null && users.size() > 1) {
+        if (users != null && users.size() > 0) {
             return false;
         }
         return departmentMapper.deleteDepartment(id);
