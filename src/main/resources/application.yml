@@ -1,9 +1,11 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.96.234.28:3303/cloud?useUnicode=true&characterEncoding=utf-8
     username: ENC(1nDyE6E86ibkNXWM/+qlvQ==)
     password: ENC(hV5qYcPEa9+RgBHCZ6vxeg==)
+    hikari:
+      max-lifetime: 86400
 
   devtools:
     restart:

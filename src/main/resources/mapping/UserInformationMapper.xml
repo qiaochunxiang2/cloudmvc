@@ -13,10 +13,24 @@
         select * from userinformation where id = #{id}
     </select>
     <insert id="addInformation">
-        insert into userinformation(id, image_url) values(#{id}, #{imageUrl})
+        insert into userinformation(id, name, sex, age, phone, qq, birthday, address, email)
+        values(#{id}, #{name}, #{sex}, #{age},#{phone},#{qq},#{birthday}, #{address}, #{email})
     </insert>
 
     <update id="updateInformation">
-        update userinformation set name = #{name}, sex = #{sex}, age = #{age}, phone = #{phone} where id = #{id}
+        update userinformation set name = #{name}, sex = #{sex}, age = #{age}, phone = #{phone}, qq = #{qq},
+        birthday = #{birthday}, address = #{address}, email = #{email}, note = #{note} where id = #{id}
     </update>
+
+    <update id="updateImageUrl">
+        update userinformation set image_url = #{imageUrl} where id = #{id}
+    </update>
+
+    <delete id="deleteUserInformation">
+        delete from userinformation where id = #{id}
+    </delete>
+
+    <select id="findByDid" resultMap="userinformation">
+        select * from userinformation where dId = #{dId}
+    </select>
 </mapper>

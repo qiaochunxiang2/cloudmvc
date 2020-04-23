@@ -23,6 +23,12 @@
             <result property="age" column="age"/>
             <result property="imageUrl" column="image_url"/>
             <result property="phone" column="phone"/>
+            <result property="birthday" column="birthday"/>
+            <result property="qq" column="qq"/>
+            <result property="address" column="address"/>
+            <result property="email" column="email"/>
+            <result property="note" column="note"/>
+            <association property="department" column="dId" select="com.sk.cloudmvc.dao.DepartmentMapper.findById" javaType="com.sk.cloudmvc.model.Department"/>
         </association>
     </resultMap>
     <select id="login" resultMap="user">
@@ -45,4 +51,17 @@
         insert into user(id, username, password)
         values (#{id}, #{username}, #{password})
     </insert>
+
+    <select id="findAll" resultMap="user">
+        select *
+        from user u,
+             userinformation ui
+        where u.id = ui.id
+    </select>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where id = #{id}
+    </delete>
 </mapper>

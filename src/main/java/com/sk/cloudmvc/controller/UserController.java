@@ -4,7 +4,6 @@ import com.sk.cloudmvc.model.User;
 import com.sk.cloudmvc.model.UserInformation;
 import com.sk.cloudmvc.service.UserService;
 import com.sk.cloudmvc.until.CommonResult;
-import com.sk.cloudmvc.until.QiNiuUploadUntil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +29,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private QiNiuUploadUntil qiNiuUploadUntil;
-
     @PostMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
     public CommonResult login(@RequestBody Map<String, Object> jsondata) {
@@ -45,7 +42,7 @@ public class UserController {
             }
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
@@ -64,7 +61,7 @@ public class UserController {
             }
         } catch (Exception e) {
             result.setState(500);
-            result.setData(e);
+            result.setData(false);
             result.setMsg("服务器错误");
             LOGGER.error(e.toString(), e);
         }
@@ -73,12 +70,13 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiOperation(value = "注册功能", notes = "注册功能")
-    public CommonResult register(@RequestBody Map<String, String> jsondata) {
+    public CommonResult register(@RequestBody User user) {
         CommonResult result = new CommonResult();
         try {
-            userService.register(jsondata);
+            userService.register(user);
         } catch (Exception e) {
             result.setState(500);
+            result.setData(false);
             result.setMsg("用户名已存在");
             LOGGER.error(e.toString(), e);
         }
@@ -86,15 +84,31 @@ public class UserController {
     }
 
     @PostMapping("/updatePhoto")
-    @ApiOperation(value = "更改头像", notes = "更改头像")
-    public CommonResult updatePhoto(MultipartFile file, String id) {
+    @ApiOperation(value = "更改头像覆盖上传并刷新", notes = "更改头像覆盖上传并刷新")
+    public CommonResult uploadAndRefresh(MultipartFile file, String id, String key) {
         CommonResult result = new CommonResult();
         try {
-            boolean uploadResult = userService.updatePhoto(file, id);
+            Object uploadResult = userService.updatePhoto(file, id, key);
             result.setData(uploadResult);
         } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @PostMapping("uploadPhoto")
+    @ApiOperation(value = "上传新文件然后删除旧文件", notes = "上传新文件然后删除旧文件")
+    public CommonResult uploadAndDelete(MultipartFile file, String id, String oldKey) {
+        CommonResult result = new CommonResult();
+        try {
+            String newKey = userService.uploadAndDeletePhoto(file, id, oldKey);
+            result.setData(newKey);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
@@ -109,14 +123,41 @@ public class UserController {
         } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
+            result.setData(false);
             LOGGER.error(e.toString(), e);
         }
         return result;
     }
 
-    @PostMapping("/test")
-    public String test() {
-        System.out.println(qiNiuUploadUntil);
-        return "success";
+    @GetMapping("/findAll")
+    @ApiOperation(value = "查询所有用户", notes = "查询所有用户")
+    public CommonResult findAll() {
+        CommonResult result = new CommonResult();
+        try {
+            List<User> all = userService.findAll();
+            result.setData(all);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @DeleteMapping("/deleteUser")
+    @ApiOperation(value = "删除用户", notes = "删除用户")
+    public CommonResult delete(String id) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean deleteResult = userService.deleteUser(id);
+            result.setData(deleteResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
     }
 }

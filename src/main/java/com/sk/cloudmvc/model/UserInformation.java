@@ -2,6 +2,8 @@ package com.sk.cloudmvc.model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @author qiaochunxiang
  * @date 2020/3/26 16:09
@@ -38,4 +40,34 @@ public class UserInformation {
      * 手机号
      */
     private String phone;
+
+    /**
+     * QQ
+     */
+    private String qq;
+
+    /**
+     * 生日
+     */
+    private Date birthday;
+
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 个人简介
+     */
+    private String note;
+
+    /**
+     * 所属部门
+     */
+    private Department department;
 }

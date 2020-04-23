@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sk.cloudmvc.dao.CompanyMapper">
+    <select id="allCompany" resultType="com.sk.cloudmvc.model.Company">
+        select *
+        from company
+    </select>
+
+    <delete id="deleteCompany">
+        delete
+        from company
+        where id = #{id}
+    </delete>
+
+    <insert id="addCompany">
+        insert into company(id, name, address, phone)
+        values (#{id}, #{name}, #{address}, #{phone})
+    </insert>
+
+    <update id="updateCompany">
+        update company
+        set name   = #{name},
+            phone  = #{phone},
+            address=#{address}
+        where id = #{id}
+    </update>
+</mapper>
