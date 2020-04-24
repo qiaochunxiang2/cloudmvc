@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -83,36 +82,6 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/updatePhoto")
-    @ApiOperation(value = "更改头像覆盖上传并刷新", notes = "更改头像覆盖上传并刷新")
-    public CommonResult uploadAndRefresh(MultipartFile file, String id, String key) {
-        CommonResult result = new CommonResult();
-        try {
-            Object uploadResult = userService.updatePhoto(file, id, key);
-            result.setData(uploadResult);
-        } catch (Exception e) {
-            result.setState(500);
-            result.setMsg("服务器错误");
-            LOGGER.error(e.toString(), e);
-        }
-        return result;
-    }
-
-    @PostMapping("uploadPhoto")
-    @ApiOperation(value = "上传新文件然后删除旧文件", notes = "上传新文件然后删除旧文件")
-    public CommonResult uploadAndDelete(MultipartFile file, String id, String oldKey) {
-        CommonResult result = new CommonResult();
-        try {
-            String newKey = userService.uploadAndDeletePhoto(file, id, oldKey);
-            result.setData(newKey);
-        } catch (Exception e) {
-            result.setState(500);
-            result.setMsg("服务器错误");
-            result.setData(false);
-            LOGGER.error(e.toString(), e);
-        }
-        return result;
-    }
 
     @PostMapping("/updateInformation")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
