@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("department")
 public class DepartmentController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BlogController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
 
     @Autowired
     private DepartmentService departmentService;
@@ -72,5 +72,19 @@ public class DepartmentController {
         return result;
     }
 
+    @PostMapping("/updateDepartment")
+    @ApiOperation(value = "修改部门信息", notes = "修改部门信息")
+    public CommonResult updateDepartment(@RequestBody Map<String, String> department) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean updateResult = departmentService.updateDepartment(department);
+            result.setData(updateResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
 
 }

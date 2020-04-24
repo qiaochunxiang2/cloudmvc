@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author qiaochunxiang
@@ -43,6 +44,8 @@ public class DepartmentService {
      * @date 17:03 2020/4/23
      **/
     public boolean addDepartment(Map<String, String> department) {
+        String id = UUID.randomUUID().toString().replace("-", "");
+        department.put("id", id);
         return departmentMapper.addDepartment(department);
     }
 
@@ -60,5 +63,17 @@ public class DepartmentService {
             return false;
         }
         return departmentMapper.deleteDepartment(id);
+    }
+
+    /**
+     * 修改部门信息
+     *
+     * @param department 部门信息
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 20:54 2020/4/24
+     **/
+    public boolean updateDepartment(Map<String, String> department){
+        return departmentMapper.updateDepartment(department);
     }
 }

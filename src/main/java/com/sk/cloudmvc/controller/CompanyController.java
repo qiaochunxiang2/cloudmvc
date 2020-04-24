@@ -2,7 +2,6 @@ package com.sk.cloudmvc.controller;
 
 import com.sk.cloudmvc.model.Company;
 import com.sk.cloudmvc.service.CompanyService;
-import com.sk.cloudmvc.service.DepartmentService;
 import com.sk.cloudmvc.until.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +21,7 @@ import java.util.List;
 @RequestMapping("company")
 public class CompanyController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BlogController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyController.class);
 
     @Autowired
     private CompanyService companyService;

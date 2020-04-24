@@ -34,10 +34,17 @@
     </insert>
 
     <select id="findById" resultMap="department">
-        select d.id as did, d.name as dname,c.id as cid, c.name as cname, c.address as caddress, c.phone as cphone
+        select d.id as did, d.name as dname, c.id as cid, c.name as cname, c.address as caddress, c.phone as cphone
         from department d,
              company c
         where d.cId = c.id
           and d.id = #{id}
     </select>
+
+    <update id="updateDepartment">
+        update department
+        set name = #{name},
+            cId  = #{cId}
+        where id = #{id}
+    </update>
 </mapper>

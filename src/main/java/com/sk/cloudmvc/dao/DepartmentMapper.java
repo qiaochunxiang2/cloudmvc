@@ -53,4 +53,14 @@ public interface DepartmentMapper {
      * @date 22:31 2020/4/23
      **/
     Department findById(String id);
+
+    /**
+    * 修改部门信息
+    *
+    * @param department 部门信息
+    * @return boolean
+    * @author qiaochunxiang
+    * @date 20:54 2020/4/24
+    **/
+    boolean updateDepartment(Map<String, String> department);
 }
