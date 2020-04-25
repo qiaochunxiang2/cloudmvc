@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -95,8 +96,11 @@ public class UserService {
      * @author qiaochunxiang
      * @date 15:46 2020/4/20
      **/
-    public List<User> findAll() {
-        return userMapper.findAll();
+    public List<User> findAll(String cId, String dId) {
+        Map<String, String> queryData = new HashMap<>();
+        queryData.put("cId", cId);
+        queryData.put("dId", dId);
+        return userMapper.findAll(queryData);
     }
 
     /**

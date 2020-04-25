@@ -46,11 +46,12 @@ public interface UserMapper {
     /**
      * 查询所有用户
      *
+     * @param queryData 查询条件
      * @return java.util.List<com.sk.cloudmvc.model.User>
      * @author qiaochunxiang
      * @date 15:44 2020/4/20
      **/
-    List<User> findAll();
+    List<User> findAll(Map<String, String> queryData);
 
     /**
      * 删除用户id

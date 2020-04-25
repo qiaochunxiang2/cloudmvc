@@ -100,10 +100,11 @@ public class UserController {
 
     @GetMapping("/findAll")
     @ApiOperation(value = "查询所有用户", notes = "查询所有用户")
-    public CommonResult findAll() {
+    public CommonResult findAll(@RequestParam(name = "cId", required = false) String cId,
+                                @RequestParam(name = "dId", required = false) String dId) {
         CommonResult result = new CommonResult();
         try {
-            List<User> all = userService.findAll();
+            List<User> all = userService.findAll(cId, dId);
             result.setData(all);
         } catch (Exception e) {
             result.setState(500);

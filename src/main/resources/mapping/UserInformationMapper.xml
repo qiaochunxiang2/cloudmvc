@@ -13,13 +13,13 @@
         select * from userinformation where id = #{id}
     </select>
     <insert id="addInformation">
-        insert into userinformation(id, name, sex, age, phone, qq, birthday, address, email)
-        values(#{id}, #{name}, #{sex}, #{age},#{phone},#{qq},#{birthday}, #{address}, #{email})
+        insert into userinformation(id, name, sex, age, phone, qq, birthday, address, email, dId)
+        values(#{id}, #{name}, #{sex}, #{age},#{phone},#{qq},#{birthday}, #{address}, #{email}, #{department.id})
     </insert>
 
     <update id="updateInformation">
         update userinformation set name = #{name}, sex = #{sex}, age = #{age}, phone = #{phone}, qq = #{qq},
-        birthday = #{birthday}, address = #{address}, email = #{email}, note = #{note} where id = #{id}
+        birthday = #{birthday}, address = #{address}, email = #{email}, note = #{note} , dId = #{department.id} where id = #{id}
     </update>
 
     <update id="updateImageUrl">

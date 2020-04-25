@@ -28,7 +28,8 @@
             <result property="address" column="address"/>
             <result property="email" column="email"/>
             <result property="note" column="note"/>
-            <association property="department" column="dId" select="com.sk.cloudmvc.dao.DepartmentMapper.findById" javaType="com.sk.cloudmvc.model.Department"/>
+            <association property="department" column="dId" select="com.sk.cloudmvc.dao.DepartmentMapper.findById"
+                         javaType="com.sk.cloudmvc.model.Department"/>
         </association>
     </resultMap>
     <select id="login" resultMap="user">
@@ -53,10 +54,18 @@
     </insert>
 
     <select id="findAll" resultMap="user">
-        select *
+        select u.*,ui.*
         from user u,
-             userinformation ui
-        where u.id = ui.id
+        userinformation ui,
+        company c,
+        department d
+        where u.id = ui.id and d.id = ui.dId and d.cId = c.id
+        <if test="cId != null and cId != ''">
+            and c.id = #{cId}
+        </if>
+        <if test="dId != null and dId != ''">
+            and ui.dId = #{dId}
+        </if>
     </select>
 
     <delete id="deleteUser">
