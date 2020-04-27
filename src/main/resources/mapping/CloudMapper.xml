@@ -3,7 +3,13 @@
 <mapper namespace="com.sk.cloudmvc.dao.CloudMapper">
 
     <select id="findAll" resultType="com.sk.cloudmvc.model.Cloud">
-        select * from cloud where userId = #{userId}
+        select *
+        from cloud
+        where userId = #{userId}
     </select>
 
+    <insert id="addCloud">
+        insert into cloud(id, ip, core, hardpan, memory, bandWith, startDate, endDate, userId, state)
+        values (#{id}, #{ip}, #{core}, #{hardpan}, #{memory}, #{bandWith}, #{startDate}, endDate, #{userId}, 1)
+    </insert>
 </mapper>

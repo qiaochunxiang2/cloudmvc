@@ -21,4 +21,16 @@ public interface CloudMapper {
     * @date 14:42 2020/4/8
     **/
     List<Cloud> findAll(String userId);
+
+    /**
+    * 添加服务器
+    *
+    * @param cloud 服务器信息
+    * @return boolean
+    * @author qiaochunxiang
+    * @date 14:21 2020/4/27
+    **/
+    boolean addCloud(Cloud cloud);
+
+
 }

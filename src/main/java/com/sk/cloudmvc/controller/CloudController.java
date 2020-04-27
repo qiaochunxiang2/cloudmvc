@@ -8,9 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,4 +41,19 @@ public class CloudController {
         return result;
     }
 
+    @PostMapping("apply")
+    @ApiOperation(value = "申请服务器", notes = "申请服务器")
+    public CommonResult applyCloud(@RequestBody Cloud cloud) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean addResult = cloudService.addCloud(cloud);
+            result.setData(addResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
 }
