@@ -17,45 +17,14 @@ public class Cloud {
     private String id;
 
     /**
-     * 服务器标签
+     * ip地址
      */
-    private String label;
-
-    /**
-     * 服务器监控
-     */
-    private String control;
-
-    /**
-     * 服务器地址，比如华北华南
-     */
-    private String address;
-
-    /**
-     * 公有ip地址
-     */
-    private String ipAddressPublic;
-
-    /**
-     * 私有ip地址
-     */
-    private String ipAddressPrivate;
+    private String ip;
 
     /**
      * 运行状态
      */
     private Integer state;
-
-    /**
-     * 网络类型
-     */
-    private Integer netType;
-
-    /**
-     * 操作系统
-     */
-    private Integer system;
-
 
     /**
      * 内存大小
@@ -76,11 +45,6 @@ public class Cloud {
      * 带宽大小
      */
     private Integer bandWith;
-
-    /**
-     * cpu类型
-     */
-    private Integer cpuType;
 
     /**
      * 申请日期

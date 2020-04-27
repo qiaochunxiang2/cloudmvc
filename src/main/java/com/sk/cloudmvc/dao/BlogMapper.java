@@ -41,4 +41,14 @@ public interface BlogMapper {
      * @date 21:15 2020/4/19
      **/
     List<Blog> personAll(String uid);
+
+    /**
+    *  删除博客
+    *
+    * @param id 博客id
+    * @return boolean
+    * @author qiaochunxiang
+    * @date 9:40 2020/4/27
+    **/
+    boolean deleteBlog(String id);
 }

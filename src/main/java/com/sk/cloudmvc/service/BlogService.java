@@ -60,4 +60,16 @@ public class BlogService {
     public List<Blog> personAll(String uid) {
         return blogMapper.personAll(uid);
     }
+
+    /**
+    * 删除博客
+    *
+    * @param id 博客id
+    * @return boolean
+    * @author qiaochunxiang
+    * @date 9:41 2020/4/27
+    **/
+    public boolean deleteBlog(String id){
+        return blogMapper.deleteBlog(id);
+    }
 }

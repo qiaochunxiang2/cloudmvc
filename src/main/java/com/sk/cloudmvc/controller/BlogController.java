@@ -71,4 +71,20 @@ public class BlogController {
         }
         return result;
     }
+
+    @DeleteMapping("/deleteBlog")
+    @ApiOperation(value = "删除博客", notes = "删除博客")
+    public CommonResult deleteBlog(String id) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean deleteResult = blogService.deleteBlog(id);
+            result.setData(deleteResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
 }

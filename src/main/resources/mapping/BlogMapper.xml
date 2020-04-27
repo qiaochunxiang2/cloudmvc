@@ -25,7 +25,7 @@
         select *
         from blog b,
              userinformation u
-        where b.uid = u.id
+        where b.uid = u.id order by b.publishDate desc
     </select>
 
     <insert id="publish">
@@ -38,6 +38,10 @@
         from blog b,
              userinformation u
         where b.uid = u.id
-          and b.uid = #{uid}
+          and b.uid = #{uid} order by b.publishDate desc
     </select>
+
+    <delete id="deleteBlog">
+        delete from blog where id = #{id}
+    </delete>
 </mapper>
