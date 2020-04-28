@@ -12,4 +12,10 @@
         insert into cloud(id, ip, core, hardpan, memory, bandWith, startDate, endDate, userId, state)
         values (#{id}, #{ip}, #{core}, #{hardpan}, #{memory}, #{bandWith}, #{startDate}, endDate, #{userId}, 1)
     </insert>
+
+    <update id="shutdown">
+        update cloud
+        set state = 0
+        where id = #{id}
+    </update>
 </mapper>

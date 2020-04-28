@@ -22,6 +22,11 @@ public class Cloud {
     private String ip;
 
     /**
+     * 密码
+     */
+    private String password;
+
+    /**
      * 运行状态
      */
     private Integer state;

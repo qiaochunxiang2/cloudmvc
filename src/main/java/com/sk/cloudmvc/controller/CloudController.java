@@ -3,6 +3,7 @@ package com.sk.cloudmvc.controller;
 import com.sk.cloudmvc.model.Cloud;
 import com.sk.cloudmvc.service.CloudService;
 import com.sk.cloudmvc.until.CommonResult;
+import com.sk.cloudmvc.until.State;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -48,6 +49,42 @@ public class CloudController {
         try {
             boolean addResult = cloudService.addCloud(cloud);
             result.setData(addResult);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @PostMapping("shutdown")
+    @ApiOperation(value = "服务器关机", notes = "服务器关机")
+    public CommonResult shutdown(@RequestBody Cloud cloud) {
+        CommonResult result = new CommonResult();
+        try {
+            State shutdownResult = cloudService.shutdown(cloud);
+            if (shutdownResult == State.SUCCESS) {
+                result.setData(true);
+            } else {
+                result.setData(false);
+            }
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
+
+    @PostMapping("restart")
+    @ApiOperation(value = "服务器重启", notes = "服务器关机")
+    public CommonResult restart(@RequestBody Cloud cloud) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean restart = cloudService.restart(cloud);
+            result.setData(restart);
         } catch (Exception e) {
             result.setState(500);
             result.setMsg("服务器错误");
