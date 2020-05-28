@@ -36,9 +36,18 @@ public interface CloudMapper {
      * 关机
      *
      * @param cloud 服务器信息
-     * @return boolean
      * @author qiaochunxiang
      * @date 15:30 2020/4/28
      **/
-    boolean shutdown(Cloud cloud);
+    void shutdown(Cloud cloud);
+
+    /**
+    * 卸载服务器
+    *
+    * @param id 服务器id
+    * @return boolean
+    * @author qiaochunxiang
+    * @date 16:09 2020/5/28
+    **/
+    boolean deleteCloud(String id);
 }

@@ -93,4 +93,20 @@ public class CloudController {
         }
         return result;
     }
+
+    @DeleteMapping("delete")
+    @ApiOperation(value = "服务器卸载", notes = "服务器卸载")
+    public CommonResult delete(@RequestParam(name = "id", required = false) String id) {
+        CommonResult result = new CommonResult();
+        try {
+            boolean delete = cloudService.delete(id);
+            result.setData(delete);
+        } catch (Exception e) {
+            result.setState(500);
+            result.setMsg("服务器错误");
+            result.setData(false);
+            LOGGER.error(e.toString(), e);
+        }
+        return result;
+    }
 }

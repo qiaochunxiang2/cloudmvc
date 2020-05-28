@@ -18,4 +18,8 @@
         set state = 0
         where id = #{id}
     </update>
+
+    <delete id="deleteCloud">
+        delete from cloud where id = #{id}
+    </delete>
 </mapper>

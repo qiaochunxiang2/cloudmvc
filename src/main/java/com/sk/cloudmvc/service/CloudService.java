@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.sk.cloudmvc.dao.CloudMapper;
 import com.sk.cloudmvc.model.Cloud;
+import com.sk.cloudmvc.until.CloudIPUntil;
 import com.sk.cloudmvc.until.LinuxUntil;
 import com.sk.cloudmvc.until.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,12 @@ public class CloudService {
     public boolean addCloud(Cloud cloud) {
         String id = UUID.randomUUID().toString().replace("-", "");
         cloud.setId(id);
-        cloud.setIp("192.168.239.129");
+        if (CloudIPUntil.ips.size() == 0) {
+            return false;
+        }
+        String ip = CloudIPUntil.ips.get(0);
+        cloud.setIp(ip);
+        CloudIPUntil.ips.remove(0);
         Date startDate = new Date();
         cloud.setStartDate(startDate);
         Calendar cal = Calendar.getInstance();
@@ -59,9 +65,9 @@ public class CloudService {
         Date endTime = cal.getTime();
         cloud.setEndDate(endTime);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.toString(), e);
         }
         return cloudMapper.addCloud(cloud);
     }
@@ -90,6 +96,14 @@ public class CloudService {
         return result;
     }
 
+    /**
+     * 服务器重启
+     *
+     * @param cloud 服务器信息
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 16:12 2020/4/28
+     **/
     public boolean restart(Cloud cloud) {
         String ip = cloud.getIp();
         String password = cloud.getPassword();
@@ -114,5 +128,18 @@ public class CloudService {
             throw new RuntimeException(e.toString(), e);
         }
         return restart;
+    }
+
+    /**
+     * 服务器卸载
+     *
+     * @param id 服务器id
+     * @return boolean
+     * @author qiaochunxiang
+     * @date 16:11 2020/5/28
+     **/
+    public boolean delete(String id) throws InterruptedException {
+        Thread.sleep(5000);
+        return cloudMapper.deleteCloud(id);
     }
 }

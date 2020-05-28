@@ -103,27 +103,27 @@ public class QiNiuUploadUntil {
     /**
      * 文件上传
      *
-     * @param file 需要上传的文件
-     * @param key  上传到文件空间里的key，即文件名称
+     * @param file     需要上传的文件
+     * @param fileName 上传到文件空间里的key，即文件名称
      * @return string
      */
-    public boolean upload(Object file, String key) {
+    public boolean upload(Object file, String fileName) {
         Auth auth = getAuth();
         com.qiniu.storage.Configuration configuration = getConfiguration();
         UploadManager uploadManager = new UploadManager(configuration);
         try {
             // 覆盖上传
-            String token = auth.uploadToken(bucketName, key);
+            String token = auth.uploadToken(bucketName, fileName);
             if (StringUtils.isEmpty(token)) {
                 return false;
             }
             Response res;
             if (file instanceof File) {
-                res = uploadManager.put((File) file, key, token);
+                res = uploadManager.put((File) file, fileName, token);
             } else if (file instanceof InputStream) {
-                res = uploadManager.put((InputStream) file, key, token, null, null);
+                res = uploadManager.put((InputStream) file, fileName, token, null, null);
             } else {
-                res = uploadManager.put((byte[]) file, key, token);
+                res = uploadManager.put((byte[]) file, fileName, token);
             }
             return res.isOK();
         } catch (QiniuException e) {
@@ -135,20 +135,20 @@ public class QiNiuUploadUntil {
     /**
      * 删除文件
      *
-     * @param key 文件名
+     * @param fileName 文件名
      * @return boolean
      * @author qiaochunxiang
      * @date 10:06 2020/4/4
      **/
-    public boolean delete(String key) {
+    public boolean delete(String fileName) {
         Auth auth = getAuth();
         com.qiniu.storage.Configuration configuration = getConfiguration();
         BucketManager bucketManager = new BucketManager(auth, configuration);
         try {
-            if (StringUtils.isEmpty(key)) {
+            if (StringUtils.isEmpty(fileName)) {
                 return false;
             }
-            Response res = bucketManager.delete(bucketName, key);
+            Response res = bucketManager.delete(bucketName, fileName);
             return res.isOK();
         } catch (QiniuException e) {
             LOGGER.error(e.toString(), e);

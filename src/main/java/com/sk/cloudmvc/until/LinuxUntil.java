@@ -16,29 +16,29 @@ public class LinuxUntil {
     /**
      * 执行linux命令，成功返回true，失败返回false，其他情况返回异常
      *
-     * @param host    地址
-     * @param user    用户名
-     * @param psw     密码
-     * @param port    端口
-     * @param command 命令
+     * @param url      地址
+     * @param username 用户名
+     * @param password 密码
+     * @param port     端口
+     * @param command  命令
      * @author qiaochunxiang
      * @date 14:48 2020/4/27
      **/
-    public State exec(String host, String user, String psw, int port, String command) throws JSchException {
-        ChannelExec openChannel = null;
+    public State exec(String url, String username, String password, int port, String command) throws JSchException {
+        ChannelExec channelExec = null;
         Session session = null;
         try {
-            session = connect(host, user, psw, port);
+            session = connect(url, username, password, port);
             if (session == null) {
                 return State.PASSWORD_ERROR;
             } else {
-                openChannel = (ChannelExec) session.openChannel("exec");
-                openChannel.setCommand(command);
-                openChannel.connect();
+                channelExec = (ChannelExec) session.openChannel("exec");
+                channelExec.setCommand(command);
+                channelExec.connect();
             }
         } finally {
-            if (openChannel != null && !openChannel.isClosed()) {
-                openChannel.disconnect();
+            if (channelExec != null && !channelExec.isClosed()) {
+                channelExec.disconnect();
             }
             if (session != null && session.isConnected()) {
                 session.disconnect();
