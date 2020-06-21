@@ -14,7 +14,7 @@ class CloudmvcApplicationTests {
     private StringEncryptor stringEncryptor;
     @Test
     void contextLoads() {
-        System.out.println(stringEncryptor.encrypt("root"));
+        System.out.println(stringEncryptor.encrypt("jdbc:mysql://47.96.234.28:3303/cloud?useUnicode=true&characterEncoding=utf-8"));
     }
 
 }

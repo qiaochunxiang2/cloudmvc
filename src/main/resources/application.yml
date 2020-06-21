@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.96.234.28:3303/cloud?useUnicode=true&characterEncoding=utf-8
+    url: ENC(kWeU7NbLfGE56HCpFv2mOitzRakvmEk9O3ETcI1mSz6eD3RzrbbfZtASX6xkLOxEfxG1Hj18nxCmZoIWPIfZt0/N+g5BQd1XDjQ9HnBN3hAAxRSzw336Og==)
     username: ENC(1nDyE6E86ibkNXWM/+qlvQ==)
     password: ENC(hV5qYcPEa9+RgBHCZ6vxeg==)
     hikari:
@@ -19,12 +19,10 @@ spring:
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.sk.cloudmvc.model
-
 qiniu:
   ak: 6QT3AO91Kt5kvfV8Wx5z7yfFWcWtnaittv4EFiPb
   sk: 9L-5L1hMtUQAswyfMRScwrUkDrQj3zjarzWdbAQ1
   bucketName: qiaochx
   dominName: http://qb19gmp8f.bkt.clouddn.com/
   address: HUANAN
-
 

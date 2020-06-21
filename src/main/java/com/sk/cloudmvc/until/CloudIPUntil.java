@@ -11,8 +11,8 @@ public class CloudIPUntil {
     public static List<String> ips = new ArrayList<>();
 
     static {
+        ips.add("192.168.239.128");
         ips.add("192.168.239.129");
         ips.add("192.168.239.130");
-        ips.add("192.168.239.131");
     }
 }
